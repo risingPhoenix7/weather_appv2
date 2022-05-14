@@ -13,88 +13,57 @@ String hourlyDataToJson(List<HourlyData> data) => json.encode(List<dynamic>.from
     this.dt,
     this.temp,
     this.feelsLike,
-    this.pressure,
     this.humidity,
-    this.dewPoint,
     this.uvi,
     this.clouds,
     this.visibility,
     this.windSpeed,
     this.windDeg,
-    this.windGust,
     this.weather,
-    this.pop,
-    this.rain,
+
   });
 
   int? dt;
   double ?temp;
   double ?feelsLike;
-  int ?pressure;
   int? humidity;
-  double ?dewPoint;
   double? uvi;
   int ?clouds;
   int? visibility;
   double? windSpeed;
   int? windDeg;
-  double ?windGust;
   List<Weather>? weather;
-  double? pop;
-  Rain ?rain;
+
 
   factory HourlyData.fromJson(Map<String, dynamic> json) => HourlyData(
     dt: json["dt"] == null ? null : json["dt"],
     temp: json["temp"] == null ? null : json["temp"].toDouble(),
     feelsLike: json["feels_like"] == null ? null : json["feels_like"].toDouble(),
-    pressure: json["pressure"] == null ? null : json["pressure"],
     humidity: json["humidity"] == null ? null : json["humidity"],
-    dewPoint: json["dew_point"] == null ? null : json["dew_point"].toDouble(),
     uvi: json["uvi"] == null ? null : json["uvi"].toDouble(),
     clouds: json["clouds"] == null ? null : json["clouds"],
     visibility: json["visibility"] == null ? null : json["visibility"],
     windSpeed: json["wind_speed"] == null ? null : json["wind_speed"].toDouble(),
-    windDeg: json["wind_deg"] == null ? null : json["wind_deg"],
-    windGust: json["wind_gust"] == null ? null : json["wind_gust"].toDouble(),
-    weather: json["weather"] == null ? null : List<Weather>.from(json["weather"].map((x) => Weather.fromJson(x))),
-    pop: json["pop"] == null ? null : json["pop"].toDouble(),
-    rain: json["rain"] == null ? null : Rain.fromJson(json["rain"]),
+    windDeg: json["wind_deg"] == null ? null : json["wind_deg"], weather: json["weather"] == null ? null : List<Weather>.from(json["weather"].map((x) => Weather.fromJson(x))),
+
   );
 
   Map<String, dynamic> toJson() => {
     "dt": dt == null ? null : dt,
     "temp": temp == null ? null : temp,
     "feels_like": feelsLike == null ? null : feelsLike,
-    "pressure": pressure == null ? null : pressure,
     "humidity": humidity == null ? null : humidity,
-    "dew_point": dewPoint == null ? null : dewPoint,
     "uvi": uvi == null ? null : uvi,
     "clouds": clouds == null ? null : clouds,
     "visibility": visibility == null ? null : visibility,
     "wind_speed": windSpeed == null ? null : windSpeed,
     "wind_deg": windDeg == null ? null : windDeg,
-    "wind_gust": windGust == null ? null : windGust,
     "weather": weather == null ? null : List<dynamic>.from(weather!.map((x) => x.toJson())),
-    "pop": pop == null ? null : pop,
-    "rain": rain == null ? null : rain?.toJson(),
+
   };
 }
 
-class Rain {
-  Rain({
-    this.the1H,
-  });
 
-  double? the1H;
-
-  factory Rain.fromJson(Map<String, dynamic> json) => Rain(
-    the1H: json["1h"] == null ? null : json["1h"].toDouble(),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "1h": the1H == null ? null : the1H,
-  };
-}
 
 class Weather {
   Weather({

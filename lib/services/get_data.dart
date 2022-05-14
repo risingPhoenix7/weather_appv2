@@ -11,16 +11,25 @@ class GetData {
     try {
       var response = await http.get(Uri.parse(
           'https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&appid=86fb5ee6347a1dd0d1054468963d7a8c&exclude=daily,minutely,alerts'));
-      Map data1 = jsonDecode(response.body);
+      Map data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
         print('hi hello');
-        List<HourlyData> hourlyData =
-            hourlyDataFromJson(jsonEncode(data1['hourly']));
-       List wantedlist=[hourlyData[7],hourlyData[15],hourlyData[23],hourlyData[31],hourlyData[39]];
+        var a = jsonEncode(data['current']);
+        print(jsonEncode(data['hourly']).replaceFirst('[', '[$a,'));
+        List<HourlyData> hourlyData = hourlyDataFromJson(
+            jsonEncode(data['hourly']).replaceFirst('[', '[$a'));
+
+        List<HourlyData> wantedlist = [
+          hourlyData[7],
+          hourlyData[15],
+          hourlyData[23],
+          hourlyData[31],
+          hourlyData[39]
+        ];
         //trim hourly data to only the necessary ones.
         print('hi hello');
-        return hourlyData;
+        return wantedlist;
       } else {
         print('status code not 200');
         return <HourlyData>[];
