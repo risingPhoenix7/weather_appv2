@@ -5,8 +5,10 @@
 import 'dart:convert';
 
 List<HourlyData> hourlyDataFromJson(String str) => List<HourlyData>.from(json.decode(str).map((x) => HourlyData.fromJson(x)));
-
 String hourlyDataToJson(List<HourlyData> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+HourlyData currentDataFromJson(String str) => HourlyData.fromJson(json.decode(str));
+String currentDataToJson(HourlyData data) => json.encode(data.toJson());
 
  class HourlyData {
   HourlyData({
