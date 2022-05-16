@@ -1,5 +1,7 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:weather_forecast/controllers/my_location.dart';
+
+
+import '../data_controllers/my_location.dart';
 
 /// Determine the current position of the device.
 ///
@@ -33,8 +35,8 @@ Future<void> determinePosition() async {
       // your App should show an explanatory UI now.
       var a = await Geolocator.getLastKnownPosition();
       if (a != null) {
-        MyLocation.latitude.value = a.latitude.toString();
-        MyLocation.longitude.value = a.longitude.toString();
+        MyLocation.latitude = a.latitude.toString();
+        MyLocation.longitude = a.longitude.toString();
         return;
       }
     }
@@ -44,6 +46,11 @@ Future<void> determinePosition() async {
   // continue accessing the position of the device.
   var a = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.medium);
-  MyLocation.latitude.value = a.latitude.toString();
-  MyLocation.longitude.value = a.longitude.toString();
+  print('yay location fetched correctly');
+  MyLocation.isLocationResult=true;
+  MyLocation.latitude = a.latitude.toString();
+  MyLocation.longitude = a.longitude.toString();
+  print(MyLocation.latitude);
+  print(MyLocation.longitude);
+
 }
