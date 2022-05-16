@@ -24,7 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    String apiKey = 'AIzaSyC5kAdqHdNBv_ED7J_Neim-74WX-xzojvU';
+    String apiKey = 'pls put places api key here to test';
     googlePlace = GooglePlace(apiKey);
     print(googlePlace.apiKEY);
     searchFocusNode = FocusNode();
