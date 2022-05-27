@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:weather_forecast/data_controllers/useful_data.dart';
-import 'package:weather_forecast/services/get_data.dart';
-import 'package:weather_forecast/services/get_location.dart';
-import 'package:weather_forecast/search_screen.dart';
 import 'package:string_capitalize/string_capitalize.dart';
-import 'data_controllers/my_location.dart';
+import 'package:weather_forecast/model/useful_data.dart';
+import 'package:weather_forecast/search_screen.dart';
+import 'package:weather_forecast/viewmodel/get_data.dart';
+import 'package:weather_forecast/viewmodel/get_location.dart';
+
 import 'mini_weather_widget.dart';
+import 'model/my_location.dart';
 
 void main() {
   runApp(const MyApp());
@@ -88,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         //TODO: to change variably
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.lightBlueAccent.shade700,
         body: SafeArea(
             child: (MyLocation.isLoading && count == 0)
                 //Basically only the first time,when there's no data whatsoever this should appear.
@@ -96,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 : RefreshIndicator(
                     onRefresh: updateTheData,
                     child: ListView(
+                      physics: BouncingScrollPhysics(),
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -138,8 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
 
                         //Image to display
-                        Image.network(
-                          'http://openweathermap.org/img/wn/$imageCode@2x.png',
+                        Image.asset(
+                          'assets/$imageCode.png',
                           height: 300,
                           width: 300,
                           fit: BoxFit.fill,
@@ -200,92 +202,85 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         //Future data
 
-
                         //Can i get a ontap property from here only? or should i make the child a button?
-                        SizedBox(
-                          height: 175,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 3,
-                            itemBuilder: (BuildContext context, int index) {
-                              return MiniWeatherWidget(
-                                usefulDataKey: index,
-                              );
-                            },
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: SizedBox(
+                            height: 175,
+                            child: ListView.separated(
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 3,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const SizedBox(
+                                width: 20,
+                              ),
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  child: MiniWeatherWidget(
+                                    usefulDataKey: index,
+                                  ),
+                                  onTap: () {
+                                    MyLocation.selectedDataKey.value = index;
+                                  },
+                                );
+                              },
+                            ),
                           ),
                         ),
 
-                        Row(
-                          children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text('UV Index: '),
-                                    Text(UsefulData.requiredData(
-                                        MyLocation.selectedDataKey.value)!
-                                            .uvi.toString())
-
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text('Visibility(in m): '),
-                                    Text(UsefulData.requiredData(
-                                        MyLocation.selectedDataKey.value)!
-                                        .visibility.toString())
-
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text('Cloudiness(%):  '),
-                                    Text(UsefulData.requiredData(
-                                        MyLocation.selectedDataKey.value)!
-                                        .clouds.toString())
-
-                                  ],
-                                )
-
-
-                              ],
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text('humidity(%): '),
-                                    Text(UsefulData.requiredData(
-                                        MyLocation.selectedDataKey.value)!
-                                        .humidity.toString())
-
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text('Windspeed(m/s) '),
-                                    Text(UsefulData.requiredData(
-                                        MyLocation.selectedDataKey.value)!
-                                        .windSpeed.toString())
-
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text('Temp Feels Like:  '),
-                                    Text(UsefulData.requiredData(
-                                        MyLocation.selectedDataKey.value)!
-                                        .feelsLike.toString())
-
-                                  ],
-                                )
-
-
-                              ],
-                            ),
-
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Container(
+                              padding: EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.lightBlueAccent.shade400),
+                              child: GridView.count(
+                                childAspectRatio: 1.8,
+                                shrinkWrap: true,
+                                crossAxisCount: 2,
+                                children: <Widget>[
+                                  MiniMiniData(
+                                      title: 'UV Index',
+                                      value: UsefulData.requiredData(
+                                              MyLocation.selectedDataKey.value)!
+                                          .uvi
+                                          .toString()),
+                                  MiniMiniData(
+                                      title: 'Visibility(in m)',
+                                      value: UsefulData.requiredData(
+                                              MyLocation.selectedDataKey.value)!
+                                          .visibility
+                                          .toString()),
+                                  MiniMiniData(
+                                      title: 'Cloudiness(%)',
+                                      value: UsefulData.requiredData(
+                                              MyLocation.selectedDataKey.value)!
+                                          .clouds
+                                          .toString()),
+                                  MiniMiniData(
+                                      title: 'Humidity(%)',
+                                      value: UsefulData.requiredData(
+                                              MyLocation.selectedDataKey.value)!
+                                          .humidity
+                                          .toString()),
+                                  MiniMiniData(
+                                      title: 'Windspeed(m/s)',
+                                      value: UsefulData.requiredData(
+                                              MyLocation.selectedDataKey.value)!
+                                          .windSpeed
+                                          .toString()),
+                                  MiniMiniData(
+                                      title: 'Temp Feels Like',
+                                      value: UsefulData.requiredData(
+                                              MyLocation.selectedDataKey.value)!
+                                          .feelsLike
+                                          .toString()),
+                                ],
+                              )),
                         )
 
                         //Search

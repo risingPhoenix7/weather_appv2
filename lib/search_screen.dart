@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:google_place/google_place.dart';
-import 'package:weather_forecast/data_controllers/my_location.dart';
+import 'package:weather_forecast/model/my_location.dart';
 
 import 'main.dart';
 
