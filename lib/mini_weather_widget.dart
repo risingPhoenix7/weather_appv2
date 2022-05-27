@@ -13,7 +13,7 @@ class MiniWeatherWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.lightBlueAccent.shade400),
+          color: Colors.lightBlueAccent.shade200),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
         child: Column(
@@ -80,8 +80,8 @@ class MiniWeatherWidget extends StatelessWidget {
   }
 }
 
-class MiniMiniData extends StatelessWidget {
-  MiniMiniData({Key? key, required this.title, required this.value})
+class MiniMiniDataWidget extends StatelessWidget {
+  MiniMiniDataWidget({Key? key, required this.title, required this.value})
       : super(key: key);
   String value;
   String title;

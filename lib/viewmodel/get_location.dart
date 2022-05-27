@@ -55,7 +55,7 @@ Future<void> determinePosition() async {
   var a = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.medium);
   print('yay location fetched correctly');
-  MyLocation.isLocationResult = true;
+  MyLocation.isLocationResult.value = true;
   MyLocation.latitude = a.latitude.toString();
   MyLocation.longitude = a.longitude.toString();
   print(MyLocation.latitude);

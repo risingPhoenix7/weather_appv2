@@ -119,14 +119,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       if (details != null &&
                           details.result != null &&
                           mounted) {
-                        setState(() {
+
                           MyLocation.longitude = details
                               .result!.geometry!.location!.lng
                               .toString();
                           MyLocation.latitude = details
                               .result!.geometry!.location!.lat
                               .toString();
-                          MyLocation.isLocationResult = false;
+                          MyLocation.isLocationResult = ValueNotifier(false);
                           //MyLocation.longitude.value
                           Navigator.pop(
                             context,
@@ -134,7 +134,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               builder: (context) => MyHomePage(),
                             ),
                           );
-                        });
+
                       }
                     },
                   );
