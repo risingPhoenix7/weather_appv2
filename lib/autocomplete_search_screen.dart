@@ -127,6 +127,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               .result!.geometry!.location!.lat
                               .toString();
                           MyLocation.isLocationResult = ValueNotifier(false);
+                          MyLocation.shouldSetState.value=true;
                           //MyLocation.longitude.value
                           Navigator.pop(
                             context,
