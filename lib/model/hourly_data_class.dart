@@ -9,28 +9,22 @@ AllData allDataFromJson(String str) => AllData.fromJson(json.decode(str));
 
 class AllData {
   AllData({
-    required this.lat,
-    required this.lon,
-    required this.timezone,
-    required this.timezoneOffset,
+    this.lat,
+    this.lon,
     this.current,
     this.hourly,
   });
 
-  int lat;
-  int lon;
-  String timezone;
-  int timezoneOffset;
+  int? lat;
+  int? lon;
   Current? current;
   List<Current>? hourly;
 
   factory AllData.fromJson(Map<String, dynamic> json) => AllData(
     lat: json["lat"],
     lon: json["lon"],
-    timezone: json["timezone"],
-    timezoneOffset: json["timezone_offset"],
     current: Current.fromJson(json["current"]),
-    hourly:  List<Current>.from(json["hourly"].map((x) => Current.fromJson(x))),
+    hourly: List<Current>.from(json["hourly"].map((x) => Current.fromJson(x))),
   );
 
 
@@ -38,7 +32,7 @@ class AllData {
 
 class Current {
   Current({
-    required this.dt,
+    this.dt,
     this.temp,
     this.feelsLike,
     this.humidity,
@@ -50,15 +44,15 @@ class Current {
     this.weather,
   });
 
-  int dt;
+  int? dt;
   double? temp;
   double? feelsLike;
-  int? humidity;
-  int? uvi;
+  int ?humidity;
+  int ?uvi;
   int? clouds;
-  int? visibility;
+  int ?visibility;
   double? windSpeed;
-  int? windDeg;
+  int ?windDeg;
   List<Weather>? weather;
 
   factory Current.fromJson(Map<String, dynamic> json) => Current(
@@ -73,6 +67,7 @@ class Current {
     windDeg: json["wind_deg"],
     weather: List<Weather>.from(json["weather"].map((x) => Weather.fromJson(x))),
   );
+
 
 }
 
@@ -89,8 +84,8 @@ class Weather {
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
     id: json["id"],
-    description: json["description"]??'NA',
-    icon: json["icon"]??'03d',
+    description: json["description"],
+    icon: json["icon"],
   );
 
 
