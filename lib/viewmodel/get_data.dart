@@ -15,12 +15,10 @@ class GetData {
     try {
       var response = await http.get(Uri.parse(
           'https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&units=metric&appid=86fb5ee6347a1dd0d1054468963d7a8c&exclude=daily,minutely,alerts'));
-
-      Map data = jsonDecode(response.body);
       print('hello');
       if (response.statusCode == 200) {
-        List<HourlyData> hourlyData =
-            hourlyDataFromJson(jsonEncode(data['hourly']));
+
+        var allData = allDataFromJson(response.body);
         print('hi');
         UsefulData.current = currentDataFromJson(jsonEncode(data['current']));
         UsefulData.second = hourlyData[7];
