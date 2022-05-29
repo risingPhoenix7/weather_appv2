@@ -10,22 +10,21 @@ class GetData {
   var latitude = MyLocation.latitude;
   var longitude = MyLocation.longitude;
   String city = MyLocation.cityName;
+  late AllData allData;
 
   Future<void> updateWeatherData() async {
     try {
       var response = await http.get(Uri.parse(
           'https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&units=metric&appid=86fb5ee6347a1dd0d1054468963d7a8c&exclude=daily,minutely,alerts'));
-
-      Map data = jsonDecode(response.body);
       print('hello');
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        List<HourlyData> hourlyData =
-            hourlyDataFromJson(jsonEncode(data['hourly']));
+        print('just before catastrophe');
+        allData = allDataFromJson(response.body);
         print('hi');
-        UsefulData.current = currentDataFromJson(jsonEncode(data['current']));
-        UsefulData.second = hourlyData[7];
-        UsefulData.third = hourlyData[15];
-
+        UsefulData.current = allData.current;
+        UsefulData.second = allData.hourly![0];
+        UsefulData.third = allData.hourly![1];
         print('data received correctly');
         //trim hourly data to only the necessary ones.
         return;
