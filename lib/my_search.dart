@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/model/my_location.dart';
+import 'package:weather_forecast/viewmodel/my_location.dart';
 import 'package:weather_forecast/viewmodel/get_data.dart';
 
 import 'main.dart';

@@ -1,4 +1,4 @@
-import 'hourly_data_class.dart';
+import '../model/hourly_data_class.dart';
 
 class UsefulData {
   static late HourlyData current;

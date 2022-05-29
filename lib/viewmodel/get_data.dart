@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:weather_forecast/model/hourly_data_class.dart';
-import 'package:weather_forecast/model/my_location.dart';
+import 'package:weather_forecast/viewmodel/my_location.dart';
 
-import '../model/useful_data.dart';
+import 'useful_data.dart';
 
 class GetData {
   var latitude = MyLocation.latitude;
