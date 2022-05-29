@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:string_capitalize/string_capitalize.dart';
 import 'package:weather_forecast/viewmodel/useful_data.dart';
 import 'package:weather_forecast/viewmodel/get_data.dart';
-import 'package:weather_forecast/viewmodel/get_location.dart';
+import 'package:weather_forecast/Repo/Model/mygeolocator.dart';
 
 import 'mini_weather_widget.dart';
 import 'viewmodel/my_location.dart';
