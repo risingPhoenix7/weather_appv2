@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:weather_forecast/model/hourly_data_class.dart';
 import 'package:weather_forecast/model/my_location.dart';
@@ -19,11 +20,11 @@ class GetData {
       print(response.statusCode);
       if (response.statusCode == 200) {
         print('just before catastrophe');
-         allData = allDataFromJson(response.body);
+        allData = allDataFromJson(response.body);
         print('hi');
         UsefulData.current = allData.current;
-        UsefulData.second = allData.hourly![8];
-        UsefulData.third = allData.hourly![15];
+        UsefulData.second = allData.hourly![0];
+        UsefulData.third = allData.hourly![1];
         print('data received correctly');
         //trim hourly data to only the necessary ones.
         return;

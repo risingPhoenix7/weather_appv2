@@ -5,7 +5,7 @@
 import 'dart:convert';
 
 AllData allDataFromJson(String str) => AllData.fromJson(json.decode(str));
-
+int i = 0;
 
 class AllData {
   AllData({
@@ -21,13 +21,17 @@ class AllData {
   List<Current>? hourly;
 
   factory AllData.fromJson(Map<String, dynamic> json) => AllData(
-    lat: json["lat"],
-    lon: json["lon"],
-    current: Current.fromJson(json["current"]),
-    hourly: List<Current>.from(json["hourly"].map((x) => Current.fromJson(x))),
-  );
-
-
+        lat: json["lat"],
+        lon: json["lon"],
+        current: Current.fromJson(json["current"]),
+        hourly: List<Current>.from(json["hourly"].map((x) {
+          if (i == 8 || i == 15) {
+            i++;
+            return Current.fromJson(x);
+          } else
+            return null;
+        })),
+      );
 }
 
 class Current {
@@ -47,28 +51,27 @@ class Current {
   int? dt;
   double? temp;
   double? feelsLike;
-  int ?humidity;
-  int ?uvi;
+  int? humidity;
+  int? uvi;
   int? clouds;
-  int ?visibility;
+  int? visibility;
   double? windSpeed;
-  int ?windDeg;
+  int? windDeg;
   List<Weather>? weather;
 
   factory Current.fromJson(Map<String, dynamic> json) => Current(
-    dt: json["dt"],
-    temp: json["temp"].toDouble(),
-    feelsLike: json["feels_like"].toDouble(),
-    humidity: json["humidity"],
-    uvi: json["uvi"],
-    clouds: json["clouds"],
-    visibility: json["visibility"],
-    windSpeed: json["wind_speed"].toDouble(),
-    windDeg: json["wind_deg"],
-    weather: List<Weather>.from(json["weather"].map((x) => Weather.fromJson(x))),
-  );
-
-
+        dt: json["dt"],
+        temp: json["temp"].toDouble(),
+        feelsLike: json["feels_like"].toDouble(),
+        humidity: json["humidity"],
+        uvi: json["uvi"],
+        clouds: json["clouds"],
+        visibility: json["visibility"],
+        windSpeed: json["wind_speed"].toDouble(),
+        windDeg: json["wind_deg"],
+        weather:
+            List<Weather>.from(json["weather"].map((x) => Weather.fromJson(x))),
+      );
 }
 
 class Weather {
@@ -83,10 +86,8 @@ class Weather {
   String? icon;
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
-    id: json["id"],
-    description: json["description"],
-    icon: json["icon"],
-  );
-
-
+        id: json["id"],
+        description: json["description"],
+        icon: json["icon"],
+      );
 }
