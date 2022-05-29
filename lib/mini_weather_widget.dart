@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/model/useful_data.dart';
+import 'package:weather_forecast/viewmodel/useful_data.dart';
 
 class MiniWeatherWidget extends StatelessWidget {
   MiniWeatherWidget({Key? key, required this.usefulDataKey}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 
-import '../model/my_location.dart';
+import 'my_location.dart';
 
 /// Determine the current position of the device.
 ///

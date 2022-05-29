@@ -1,41 +1,17 @@
 // To parse this JSON data, do
 //
-//     final allData = allDataFromJson(jsonString);
+//     final hourlyData = hourlyDataFromJson(jsonString);
 
 import 'dart:convert';
 
-AllData allDataFromJson(String str) => AllData.fromJson(json.decode(str));
-int i = 0;
+List<HourlyData> hourlyDataFromJson(String str) =>
+    List<HourlyData>.from(json.decode(str).map((x) => HourlyData.fromJson(x)));
 
-class AllData {
-  AllData({
-    this.lat,
-    this.lon,
-    this.current,
-    this.hourly,
-  });
+HourlyData currentDataFromJson(String str) =>
+    HourlyData.fromJson(json.decode(str));
 
-  int? lat;
-  int? lon;
-  Current? current;
-  List<Current>? hourly;
-
-  factory AllData.fromJson(Map<String, dynamic> json) => AllData(
-        lat: json["lat"],
-        lon: json["lon"],
-        current: Current.fromJson(json["current"]),
-        hourly: List<Current>.from(json["hourly"].map((x) {
-          if (i == 8 || i == 15) {
-            i++;
-            return Current.fromJson(x);
-          } else
-            return null;
-        })),
-      );
-}
-
-class Current {
-  Current({
+class HourlyData {
+  HourlyData({
     this.dt,
     this.temp,
     this.feelsLike,
@@ -52,25 +28,29 @@ class Current {
   double? temp;
   double? feelsLike;
   int? humidity;
-  int? uvi;
+  double? uvi;
   int? clouds;
   int? visibility;
   double? windSpeed;
   int? windDeg;
   List<Weather>? weather;
 
-  factory Current.fromJson(Map<String, dynamic> json) => Current(
+  factory HourlyData.fromJson(Map<String, dynamic> json) => HourlyData(
         dt: json["dt"],
-        temp: json["temp"].toDouble(),
-        feelsLike: json["feels_like"].toDouble(),
+        temp: json["temp"] == null ? 0 : json["temp"].toDouble(),
+        feelsLike:
+            json["feels_like"] == null ? 0 : json["feels_like"].toDouble(),
         humidity: json["humidity"],
-        uvi: json["uvi"],
+        uvi: json["uvi"] == null ? null : json["uvi"].toDouble(),
         clouds: json["clouds"],
         visibility: json["visibility"],
-        windSpeed: json["wind_speed"].toDouble(),
-        windDeg: json["wind_deg"],
-        weather:
-            List<Weather>.from(json["weather"].map((x) => Weather.fromJson(x))),
+        windSpeed:
+            json["wind_speed"] == null ? null : json["wind_speed"].toDouble(),
+        windDeg: json["wind_deg"] ?? null,
+        weather: json["weather"] == null
+            ? null
+            : List<Weather>.from(
+                json["weather"].map((x) => Weather.fromJson(x))),
       );
 }
 
@@ -86,8 +66,8 @@ class Weather {
   String? icon;
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
-        id: json["id"],
-        description: json["description"],
-        icon: json["icon"],
+        id: json["id"] ?? null,
+        description: json["description"] ?? null,
+        icon: json["icon"] ?? null,
       );
 }

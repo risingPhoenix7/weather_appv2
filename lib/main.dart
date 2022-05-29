@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:string_capitalize/string_capitalize.dart';
-import 'package:weather_forecast/model/useful_data.dart';
+import 'package:weather_forecast/viewmodel/useful_data.dart';
 import 'package:weather_forecast/viewmodel/get_data.dart';
 import 'package:weather_forecast/viewmodel/get_location.dart';
 
 import 'mini_weather_widget.dart';
-import 'model/my_location.dart';
+import 'viewmodel/my_location.dart';
 import 'my_search.dart';
 
 void main() {
