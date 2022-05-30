@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/viewmodel/my_location.dart';
-import 'package:weather_forecast/viewmodel/get_data.dart';
+import 'package:weather_forecast/Controllers/some_controllers.dart';
+import 'package:weather_forecast/ViewModels/search_location_viewmodel.dart';
+
 
 import 'main.dart';
 
@@ -11,7 +12,7 @@ class MySearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<MySearchScreen> {
   final _searchFieldController = TextEditingController();
-  bool error = false;
+  var myLocation;
 
   @override
   void initState() {
@@ -20,7 +21,7 @@ class _SearchScreenState extends State<MySearchScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _searchFieldController.dispose();
     super.dispose();
   }
 
@@ -49,18 +50,19 @@ class _SearchScreenState extends State<MySearchScreen> {
               suffixIcon: IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () async {
-                    error =
-                        await GetData().checkCity(_searchFieldController.text);
-                    print(error);
-                    if (error) {
+                    myLocation =
+                        await SearchLocationViewModel().getLatLonFromCityName(_searchFieldController.text);
+                    print(myLocation);
+                    if (myLocation==null) {
                       showDialog(
                           context: context,
                           builder: (context) {
                             return MyDialog(errorMessage: 'Location not found');
                           });
                     } else {
-                      MyLocation.isLocationResult.value = false;
-                      MyLocation.shouldSetState.value = true;
+                      SomeControllers.searchLocation=myLocation;
+                      SomeControllers.isLocationResult.value = false;
+                      SomeControllers.shouldSetState.value = true;
                       Navigator.pop(
                         context,
                         MaterialPageRoute(

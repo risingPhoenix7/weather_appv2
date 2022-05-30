@@ -14,7 +14,10 @@ class FullWeather {
     required this.third,
   });
 
-  factory FullWeather.fromJson(Map<String, dynamic> json) => _$FullWeatherFromJson(json);
+  factory FullWeather.fromJson(Map<String, dynamic> json) {
+    print('atleast this?');
+      return _$FullWeatherFromJson(json);}
+
   Map<String, dynamic> toJson() => _$FullWeatherToJson(this);
 }
 

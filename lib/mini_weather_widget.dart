@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/viewmodel/useful_data.dart';
 
 class MiniWeatherWidget extends StatelessWidget {
-  MiniWeatherWidget({Key? key, required this.usefulDataKey}) : super(key: key);
-  final int usefulDataKey;
-
-  late var dateTime = DateTime.fromMillisecondsSinceEpoch(
-      UsefulData.requiredData(usefulDataKey)!.dt! * 1000);
+  MiniWeatherWidget(
+      {Key? key, required this.temperature, required this.dateTime})
+      : super(key: key);
+  final String temperature;
+  final DateTime dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +22,7 @@ class MiniWeatherWidget extends StatelessWidget {
             Row(
               children: <Text>[
                 Text(
-                  UsefulData.requiredData(usefulDataKey) == null
-                      ? 'idk'
-                      : dateTime.day.toString(),
+                  dateTime.day.toString(),
                   style: TextStyle(fontSize: 25),
                 ),
                 Text(
@@ -33,9 +30,7 @@ class MiniWeatherWidget extends StatelessWidget {
                   style: TextStyle(fontSize: 25),
                 ),
                 Text(
-                  UsefulData.requiredData(usefulDataKey) == null
-                      ? 'idk'
-                      : dateTime.month.toString(),
+                  dateTime.month.toString(),
                   style: TextStyle(fontSize: 25),
                 ),
               ],
@@ -65,9 +60,7 @@ class MiniWeatherWidget extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  UsefulData.requiredData(usefulDataKey)!
-                      .temp!
-                      .toStringAsPrecision(2),
+                  temperature,
                   style: TextStyle(fontSize: 40),
                 ),
                 Text('°', style: TextStyle(fontSize: 40))
@@ -96,7 +89,7 @@ class MiniMiniDataWidget extends StatelessWidget {
         ),
         Text(
           value,
-          style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         )
       ],
     );
