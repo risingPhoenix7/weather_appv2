@@ -8,8 +8,8 @@ part of 'retrofit.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps
 
-class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
+class _RetrofitRestClient implements RetrofitRestClient {
+  _RetrofitRestClient(this._dio, {this.baseUrl}) {
     baseUrl ??= 'https://api.openweathermap.org/data/2.5';
   }
 
