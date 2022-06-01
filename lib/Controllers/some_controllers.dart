@@ -8,7 +8,5 @@ abstract class SomeControllers {
   static ValueNotifier<bool> isLocationResult = ValueNotifier(true);
   static ValueNotifier<bool> shouldSetState = ValueNotifier(false);
    static late Location searchLocation ;
-
-
-  static ValueNotifier<int> selectedDataKey = ValueNotifier(0);
+   //used searchLocation as a global variable instaed of returning as a parameter through navigator, makes things much easier.
 }

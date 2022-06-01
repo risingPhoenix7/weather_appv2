@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var count = 0;
-  var selectedDataKey = 1;
+  var selectedDataKey = 0;
   bool isLoading = true;
 
   late FullWeather fullWeather;
@@ -43,9 +43,13 @@ class _MyHomePageState extends State<MyHomePage> {
   String cityName = 'Bengaluru';
 
   Future<void> getWeatherFromLatLon() async {
-    location = await LocationViewModel().getCurrentLocation();
+    print('entered getweather');
+    location = (await LocationViewModel().getCurrentLocation()) ?? location;
     fullWeather = await WeatherViewModel().getWeather(location);
-
+    print('done getting data for bangalore');
+    print(fullWeather.second.dt);
+    print(fullWeather.third.dt);
+    print(fullWeather.current.dt);
     cityName = await LocationViewModel().getCityName(location);
     count++;
   }
@@ -71,7 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
         getWeatherFromCity();
         setState(() {});
       }
-    };
+    }
+    ;
   }
 
   setUsefulDataKey(int i) {
@@ -81,20 +86,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   HourlyData? getRequiredHourlyData(int key) {
-    if (key == 1) return fullWeather.current;
-    if (key == 2) return fullWeather.second;
-    if (key == 3)
+    if (key == 0) return fullWeather.current;
+    if (key == 1) return fullWeather.second;
+    if (key == 2)
       return fullWeather.third;
-    else
+    else {
       return null;
+    }
   }
 
   @override
   void initState() {
     updateTheData();
-    SomeControllers.selectedDataKey.addListener(() {
-      setState(() {});
-    });
+
     SomeControllers.shouldSetState.addListener(() async {
       await getWeatherFromCity();
       SomeControllers.shouldSetState.value = false;
@@ -110,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: SafeArea(
           child: (isLoading && count == 0)
               //Basically only the first time,when there's no data whatsoever this should appear.
-              ? Center(
+              ? const Center(
                   child: SizedBox(
                     height: 150,
                     width: 150,
@@ -123,13 +127,13 @@ class _MyHomePageState extends State<MyHomePage> {
               : RefreshIndicator(
                   onRefresh: updateTheData,
                   child: ListView(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: <Widget>[
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             IconButton(
@@ -145,13 +149,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 size: 35,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Expanded(
                               child: Text(
                                 cityName,
-                                style: TextStyle(fontSize: 25),
+                                style: const TextStyle(fontSize: 25),
                               ),
                             ),
                             IconButton(
@@ -163,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         fullscreenDialog: true),
                                   );
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.search,
                                   size: 35,
                                 ))
@@ -191,9 +195,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 .weather![0]
                                 .description!
                                 .capitalizeEach(),
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       )),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
 
                       //Temperature
                       Row(
@@ -205,21 +209,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                 : getRequiredHourlyData(selectedDataKey)!
                                     .temp!
                                     .toStringAsPrecision(3),
-                            style: TextStyle(fontSize: 60),
+                            style: const TextStyle(fontSize: 60),
                           ),
-                          Text('°', style: TextStyle(fontSize: 60))
+                          const Text('°', style: TextStyle(fontSize: 60))
                         ],
                       ),
 
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
                       //WindSpeed and humidity
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.wind_power_outlined),
-                          SizedBox(width: 5),
+                          const Icon(Icons.wind_power_outlined),
+                          const SizedBox(width: 5),
                           Text(getRequiredHourlyData(selectedDataKey)!
                                       .windSpeed ==
                                   null
@@ -227,10 +231,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               : getRequiredHourlyData(selectedDataKey)!
                                   .windSpeed!
                                   .toStringAsPrecision(2)),
-                          Text(' m/s'),
-                          SizedBox(width: 15),
-                          Icon(Icons.water_drop_outlined),
-                          SizedBox(width: 5),
+                          const Text(' m/s'),
+                          const SizedBox(width: 15),
+                          const Icon(Icons.water_drop_outlined),
+                          const SizedBox(width: 5),
                           Text(getRequiredHourlyData(selectedDataKey)!
                                       .humidity ==
                                   null
@@ -238,10 +242,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               : getRequiredHourlyData(selectedDataKey)!
                                   .humidity!
                                   .toStringAsPrecision(2)),
-                          Text(' %')
+                          const Text(' %')
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
                       //Future data
 
@@ -251,7 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: SizedBox(
                           height: 175,
                           child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemCount: 3,
@@ -264,16 +268,15 @@ class _MyHomePageState extends State<MyHomePage> {
                               return GestureDetector(
                                 child: MiniWeatherWidget(
                                   dateTime: DateTime.fromMillisecondsSinceEpoch(
-                                      getRequiredHourlyData(selectedDataKey)!
-                                              .dt! *
-                                          1000),
-                                  temperature:
-                                      getRequiredHourlyData(selectedDataKey)!
-                                          .temp!
-                                          .toStringAsPrecision(2),
+                                      getRequiredHourlyData(index)!.dt! * 1000),
+                                  temperature: getRequiredHourlyData(index)!
+                                      .temp!
+                                      .toStringAsPrecision(2),
                                 ),
                                 onTap: () {
-                                  SomeControllers.selectedDataKey.value = index;
+                                  setState(() {
+                                    selectedDataKey = index;
+                                  });
                                 },
                               );
                             },
@@ -284,7 +287,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Container(
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: Colors.lightBlueAccent.shade200),

@@ -8,32 +8,27 @@ import '../Repo/Model/location.dart';
 import '../Repo/Model/mygeolocator.dart';
 
 class LocationViewModel {
-  Future<Location> getCurrentLocation() async {
-    print('Entered current location');
-    Position position = await MyGeoLocator().determinePosition();
-    print('Got the position');
-    print(position);
-    Location location =
-        Location(lat: position.latitude, lon: position.longitude);
-    return location;
+  Future<Location?> getCurrentLocation() async {
+    Position position;
+    try {
+      position = await MyGeoLocator().determinePosition();
+      Location location =
+          Location(lat: position.latitude, lon: position.longitude);
+      return location;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<String> getCityName(Location location) async {
-
-    print('entered getCityName');
     try {
       var response = await http.get(Uri.parse(
           "$baseUrl/weather?appid=$apiKey&lat=${location.lat.toString()}&lon=${location.lon.toString()}&"));
-      print('but stuck here');
-      print(response.statusCode);
+
       Map data = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        print('hi');
-        print(data['name']);
         return data['name'];
       } else {
-        print('status code not 200');
-        print(response.statusCode);
         return '';
       }
     } catch (e) {

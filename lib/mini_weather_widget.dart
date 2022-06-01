@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MiniWeatherWidget extends StatelessWidget {
-  MiniWeatherWidget(
+  const MiniWeatherWidget(
       {Key? key, required this.temperature, required this.dateTime})
       : super(key: key);
   final String temperature;
@@ -23,47 +23,47 @@ class MiniWeatherWidget extends StatelessWidget {
               children: <Text>[
                 Text(
                   dateTime.day.toString(),
-                  style: TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 25),
                 ),
-                Text(
+                const Text(
                   ' / ',
                   style: TextStyle(fontSize: 25),
                 ),
                 Text(
                   dateTime.month.toString(),
-                  style: TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 25),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               children: <Widget>[
                 Text(
                   dateTime.hour.toString(),
-                  style: TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 25),
                 ),
-                Text(
+                const Text(
                   ':',
                   style: TextStyle(fontSize: 25),
                 ),
                 Text(
                   dateTime.minute.toString(),
-                  style: TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 25),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               children: <Widget>[
                 Text(
                   temperature,
-                  style: TextStyle(fontSize: 40),
+                  style: const TextStyle(fontSize: 40),
                 ),
-                Text('°', style: TextStyle(fontSize: 40))
+                const Text('°', style: TextStyle(fontSize: 40))
               ],
             )
           ],
@@ -85,11 +85,11 @@ class MiniMiniDataWidget extends StatelessWidget {
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
         ),
         Text(
           value,
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         )
       ],
     );
