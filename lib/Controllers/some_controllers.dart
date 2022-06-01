@@ -9,6 +9,6 @@ abstract class SomeControllers {
   static ValueNotifier<bool> shouldSetState = ValueNotifier(false);
    static late Location searchLocation ;
 
-  static bool isLoading = true;
+
   static ValueNotifier<int> selectedDataKey = ValueNotifier(0);
 }

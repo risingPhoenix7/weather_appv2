@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:string_capitalize/string_capitalize.dart';
 import 'package:weather_forecast/Repo/Model/full_weather.dart';
 import 'package:weather_forecast/ViewModels/location_viewmodel.dart';
@@ -36,7 +35,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var count = 0;
-  var selectedDataKey = 0;
+  var selectedDataKey = 1;
+  bool isLoading = true;
 
   late FullWeather fullWeather;
   Location location = Location(lat: 12.9716, lon: 77.5946);
@@ -44,44 +44,63 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> getWeatherFromLatLon() async {
     location = await LocationViewModel().getCurrentLocation();
-    cityName = await LocationViewModel().getCityName(location);
     fullWeather = await WeatherViewModel().getWeather(location);
-    setState(() {});
+
+    cityName = await LocationViewModel().getCityName(location);
+    count++;
   }
 
+  //
   Future<void> getWeatherFromCity() async {
-    location =SomeControllers.searchLocation;
+    location = SomeControllers.searchLocation;
     fullWeather = await WeatherViewModel().getWeather(location);
-    setState(() {});
+    cityName = await LocationViewModel().getCityName(location);
+  }
+
+  Future<void> updateTheData() async {
+    if (count == 0) {
+      await getWeatherFromLatLon();
+      setState(() {
+        isLoading = false;
+      });
+    } else {
+      if (SomeControllers.isLocationResult.value) {
+        await getWeatherFromLatLon();
+        setState(() {});
+      } else {
+        getWeatherFromCity();
+        setState(() {});
+      }
+    };
   }
 
   setUsefulDataKey(int i) {
     setState(() {
       selectedDataKey = i;
-      print(selectedDataKey);
     });
   }
 
   HourlyData? getRequiredHourlyData(int key) {
     if (key == 1) return fullWeather.current;
     if (key == 2) return fullWeather.second;
-    if (key == 3) return fullWeather.third;
+    if (key == 3)
+      return fullWeather.third;
+    else
+      return null;
   }
 
   @override
   void initState() {
-    super.initState();
-    getWeatherFromLatLon();
+    updateTheData();
     SomeControllers.selectedDataKey.addListener(() {
       setState(() {});
     });
     SomeControllers.shouldSetState.addListener(() async {
-      print('should set state was called after returing from search');
-      print(SomeControllers.shouldSetState.value);
       await getWeatherFromCity();
       SomeControllers.shouldSetState.value = false;
       setState(() {});
     });
+    super.initState();
   }
 
   @override
@@ -89,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         backgroundColor: Colors.lightBlueAccent.shade400,
         body: SafeArea(
-          child: (SomeControllers.isLoading && count == 0)
+          child: (isLoading && count == 0)
               //Basically only the first time,when there's no data whatsoever this should appear.
               ? Center(
                   child: SizedBox(
@@ -102,9 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 )
               : RefreshIndicator(
-                  onRefresh: SomeControllers.isLocationResult.value
-                      ? getWeatherFromLatLon
-                      : getWeatherFromCity,
+                  onRefresh: updateTheData,
                   child: ListView(
                     physics: BouncingScrollPhysics(),
                     children: <Widget>[
@@ -117,9 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             IconButton(
                               onPressed: () {
-                                SomeControllers.isLocationResult.value =
-                                    true;
-                                getWeatherFromLatLon();
+                                SomeControllers.isLocationResult.value = true;
+                                updateTheData();
                               },
                               icon: Icon(
                                 SomeControllers.isLocationResult.value
@@ -167,9 +183,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       Center(
                           child: Text(
                         getRequiredHourlyData(selectedDataKey)!
-                            .weather![0]
-                            .description!
-                            .capitalizeEach(),
+                                    .weather![0]
+                                    .description ==
+                                null
+                            ? 'NA'
+                            : getRequiredHourlyData(selectedDataKey)!
+                                .weather![0]
+                                .description!
+                                .capitalizeEach(),
                         style: TextStyle(fontSize: 20),
                       )),
                       SizedBox(height: 15),
@@ -179,9 +200,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            getRequiredHourlyData(selectedDataKey)!
-                                .temp!
-                                .toStringAsPrecision(3),
+                            getRequiredHourlyData(selectedDataKey)!.temp == null
+                                ? 'NA'
+                                : getRequiredHourlyData(selectedDataKey)!
+                                    .temp!
+                                    .toStringAsPrecision(3),
                             style: TextStyle(fontSize: 60),
                           ),
                           Text('°', style: TextStyle(fontSize: 60))
@@ -198,15 +221,23 @@ class _MyHomePageState extends State<MyHomePage> {
                           Icon(Icons.wind_power_outlined),
                           SizedBox(width: 5),
                           Text(getRequiredHourlyData(selectedDataKey)!
-                              .windSpeed!
-                              .toStringAsPrecision(2)),
+                                      .windSpeed ==
+                                  null
+                              ? 'NA'
+                              : getRequiredHourlyData(selectedDataKey)!
+                                  .windSpeed!
+                                  .toStringAsPrecision(2)),
                           Text(' m/s'),
                           SizedBox(width: 15),
                           Icon(Icons.water_drop_outlined),
                           SizedBox(width: 5),
                           Text(getRequiredHourlyData(selectedDataKey)!
-                              .humidity!
-                              .toStringAsPrecision(2)),
+                                      .humidity ==
+                                  null
+                              ? 'NA'
+                              : getRequiredHourlyData(selectedDataKey)!
+                                  .humidity!
+                                  .toStringAsPrecision(2)),
                           Text(' %')
                         ],
                       ),
@@ -242,8 +273,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           .toStringAsPrecision(2),
                                 ),
                                 onTap: () {
-                                  SomeControllers.selectedDataKey.value =
-                                      index;
+                                  SomeControllers.selectedDataKey.value = index;
                                 },
                               );
                             },
@@ -267,38 +297,68 @@ class _MyHomePageState extends State<MyHomePage> {
                                     title: 'UV Index',
                                     value:
                                         getRequiredHourlyData(selectedDataKey)!
-                                            .uvi
-                                            .toString()),
+                                                    .uvi ==
+                                                null
+                                            ? 'NA'
+                                            : getRequiredHourlyData(
+                                                    selectedDataKey)!
+                                                .uvi
+                                                .toString()),
                                 MiniMiniDataWidget(
                                     title: 'Visibility(in m)',
                                     value:
                                         getRequiredHourlyData(selectedDataKey)!
-                                            .visibility
-                                            .toString()),
+                                                    .visibility ==
+                                                null
+                                            ? 'NA'
+                                            : getRequiredHourlyData(
+                                                    selectedDataKey)!
+                                                .visibility
+                                                .toString()),
                                 MiniMiniDataWidget(
                                     title: 'Cloudiness(%)',
                                     value:
                                         getRequiredHourlyData(selectedDataKey)!
-                                            .clouds
-                                            .toString()),
+                                                    .clouds ==
+                                                null
+                                            ? 'NA'
+                                            : getRequiredHourlyData(
+                                                    selectedDataKey)!
+                                                .clouds
+                                                .toString()),
                                 MiniMiniDataWidget(
                                     title: 'Humidity(%)',
                                     value:
                                         getRequiredHourlyData(selectedDataKey)!
-                                            .humidity
-                                            .toString()),
+                                                    .humidity ==
+                                                null
+                                            ? 'NA'
+                                            : getRequiredHourlyData(
+                                                    selectedDataKey)!
+                                                .humidity
+                                                .toString()),
                                 MiniMiniDataWidget(
                                     title: 'Windspeed(m/s)',
                                     value:
                                         getRequiredHourlyData(selectedDataKey)!
-                                            .windSpeed
-                                            .toString()),
+                                                    .windSpeed ==
+                                                null
+                                            ? 'NA'
+                                            : getRequiredHourlyData(
+                                                    selectedDataKey)!
+                                                .windSpeed
+                                                .toString()),
                                 MiniMiniDataWidget(
                                     title: 'Temp Feels Like',
                                     value:
                                         getRequiredHourlyData(selectedDataKey)!
-                                            .feelsLike
-                                            .toString()),
+                                                    .feelsLike ==
+                                                null
+                                            ? 'NA'
+                                            : getRequiredHourlyData(
+                                                    selectedDataKey)!
+                                                .feelsLike
+                                                .toString()),
                               ],
                             )),
                       )

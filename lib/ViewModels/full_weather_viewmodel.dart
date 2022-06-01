@@ -9,11 +9,10 @@ class WeatherViewModel {
     final dio = Dio();
     final client = RetrofitRestClient(dio);
     FullWeather fullWeather;
-    print('ia m inside');
+    print('ia m inside getWeather');
     fullWeather = await client.getWeather(
         location.lat.toString(), location.lon.toString());
-    print('iam not inside');
-    print(fullWeather.current.temp);
+    print('and i am outside getWeather now');
     return fullWeather;
   }
 

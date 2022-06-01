@@ -20,7 +20,7 @@ class _CheckCityRestClient implements CheckCityRestClient {
   @override
   Future<Location> checkCityName(cityName) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'&q': cityName};
+    final queryParameters = <String, dynamic>{r'q': cityName};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -30,7 +30,10 @@ class _CheckCityRestClient implements CheckCityRestClient {
                 _dio.options, '/weather?appid=86fb5ee6347a1dd0d1054468963d7a8c',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    print(_result.realUri);
+
     final value = Location.fromJson(_result.data!);
+    print(value);
     return value;
   }
 
