@@ -13,6 +13,7 @@ class WeatherViewModel {
     fullWeather = await client.getWeather(
         location.lat.toString(), location.lon.toString());
     print('iam not inside');
+    print(fullWeather.current.temp);
     return fullWeather;
   }
 

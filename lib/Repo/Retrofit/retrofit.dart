@@ -1,8 +1,8 @@
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
+import 'package:weather_forecast/Repo/Model/full_weather.dart';
 
 import '../../resources/resources.dart';
-import '../Model/full_weather.dart';
 part 'retrofit.g.dart';
 
 @RestApi(baseUrl: baseUrl)
