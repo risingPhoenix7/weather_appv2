@@ -30,10 +30,9 @@ class _CheckCityRestClient implements CheckCityRestClient {
                 _dio.options, '/weather?appid=86fb5ee6347a1dd0d1054468963d7a8c',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    print(_result.realUri);
+
 
     final value = Location.fromJson(_result.data!);
-    print(value);
     return value;
   }
 

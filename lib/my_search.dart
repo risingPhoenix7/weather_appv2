@@ -52,8 +52,7 @@ class _SearchScreenState extends State<MySearchScreen> {
                   onPressed: () async {
                     myLocation =
                         await SearchLocationViewModel().getLatLonFromCityName(_searchFieldController.text.toUpperCase());
-                    print('why isnt the search working');
-                    print(myLocation);
+
                     if (myLocation==null) {
                       showDialog(
                           context: context,
@@ -62,8 +61,6 @@ class _SearchScreenState extends State<MySearchScreen> {
                           });
                     } else {
                       SomeControllers.searchLocation=myLocation;
-                      print('while going back, its this');
-                      print(SomeControllers.searchLocation);
                       SomeControllers.isLocationResult.value = false;
                       SomeControllers.shouldSetState.value = true;
                       Navigator.pop(

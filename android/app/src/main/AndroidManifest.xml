@@ -2,7 +2,7 @@
     package="com.example.weather_forecast">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
-        android:label="weather_forecast"
+        android:label="Wedher App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

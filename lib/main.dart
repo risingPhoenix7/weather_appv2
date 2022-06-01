@@ -43,13 +43,15 @@ class _MyHomePageState extends State<MyHomePage> {
   String cityName = 'Bengaluru';
 
   Future<void> getWeatherFromLatLon() async {
-    print('entered getweather');
-    location = (await LocationViewModel().getCurrentLocation()) ?? location;
+    var a=(await LocationViewModel().getCurrentLocation());
+    if(a==null)
+      {
+        SomeControllers.isLocationResult.value=false;
+      }
+    else
+      location=a;
     fullWeather = await WeatherViewModel().getWeather(location);
-    print('done getting data for bangalore');
-    print(fullWeather.second.dt);
-    print(fullWeather.third.dt);
-    print(fullWeather.current.dt);
+
     cityName = await LocationViewModel().getCityName(location);
     count++;
   }
