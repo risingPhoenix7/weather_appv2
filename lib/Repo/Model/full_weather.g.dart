@@ -22,13 +22,13 @@ Map<String, dynamic> _$FullWeatherToJson(FullWeather instance) =>
 HourlyData _$HourlyDataFromJson(Map<String, dynamic> json) => HourlyData(
       dt: json['dt'] as int?,
       temp: (json['temp'] as num?)?.toDouble(),
-      feelsLike: (json['feelsLike'] as num?)?.toDouble(),
+      feelsLike: (json['feels_like'] as num?)?.toDouble(),
       humidity: json['humidity'] as int?,
       uvi: (json['uvi'] as num?)?.toDouble(),
       clouds: json['clouds'] as int?,
       visibility: json['visibility'] as int?,
-      windSpeed: (json['windSpeed'] as num?)?.toDouble(),
-      windDeg: json['windDeg'] as int?,
+      windSpeed: (json['wind_speed'] as num?)?.toDouble(),
+      windDeg: json['wind_deg'] as int?,
       weather: (json['weather'] as List<dynamic>?)
           ?.map((e) => Weather.fromJson(e as Map<String, dynamic>))
           .toList(),

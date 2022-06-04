@@ -11,5 +11,5 @@ abstract class RetrofitRestClient {
 
   @GET("/onecall?&appid=$apiKey&units=metric&exclude=daily,minutely,alerts")
   Future<FullWeather> getWeather(
-      @Query("&lat") String lat, @Query("&lon") String lon);
+      @Query("lat") String lat, @Query("lon") String lon);
 }
