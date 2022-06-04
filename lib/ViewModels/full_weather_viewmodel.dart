@@ -12,5 +12,6 @@ class WeatherViewModel {
     fullWeather = await client.getWeather(
         location.lat.toString(), location.lon.toString());
     return fullWeather;
+
   }
 }
